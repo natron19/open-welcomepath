@@ -1,0 +1,36 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>My Paths</h1>
+    <%= link_to "New Path", new_path_path, class: "btn", style: "background-color: var(--accent); color: white;" %>
+  </div>
+
+  <% if @paths.empty? %>
+    <div class="text-center py-5">
+      <p class="text-muted mb-3">No paths yet.</p>
+      <%= link_to "Create your first path", new_path_path, class: "btn btn-outline-secondary" %>
+    </div>
+  <% else %>
+    <div class="row g-4">
+      <% @paths.each do |path| %>
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title"><%= path.name %></h5>
+              <p class="card-text">
+                <span class="badge bg-secondary"><%= path.community_type %></span>
+                <span class="badge bg-secondary ms-1"><%= path.member_type %></span>
+              </p>
+              <p class="text-muted small"><%= path.path_activities.count %> activities</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <%= link_to "View", path_path(path), class: "btn btn-sm btn-outline-primary" %>
+              <%= link_to "Delete", path_path(path),
+                    data: { turbo_method: :delete, turbo_confirm: "Delete this path and all its activities?" },
+                    class: "btn btn-sm btn-outline-danger" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

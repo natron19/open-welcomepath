@@ -1,0 +1,69 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col" style="max-width: 720px;">
+      <h1 class="mb-4">Generate a New Path</h1>
+
+      <% if @parse_error_message.present? %>
+        <div class="alert alert-warning">
+          <strong>Could not process the AI response.</strong> <%= @parse_error_message %>
+          Try submitting the form again — this is usually a one-time parsing issue.
+        </div>
+      <% end %>
+
+      <% if @path.errors.any? %>
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            <% @path.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: @path, url: paths_path,
+            data: { controller: "form-submit", action: "submit->form-submit#submit" } do |f| %>
+
+        <div class="mb-3">
+          <%= f.label :community_type, class: "form-label" %>
+          <%= f.select :community_type, OnboardingPath::COMMUNITY_TYPES,
+                { include_blank: "Select community type" },
+                { class: "form-select" } %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :member_type, class: "form-label" %>
+          <%= f.select :member_type, OnboardingPath::MEMBER_TYPES,
+                { include_blank: "Select member type" },
+                { class: "form-select" } %>
+        </div>
+
+        <div class="mb-3"
+             data-controller="character-count"
+             data-character-count-max-value="1500">
+          <%= f.label :member_background, class: "form-label" %>
+          <small class="text-muted ms-2">Who is this person? What do they bring?</small>
+          <%= f.text_area :member_background, rows: 4, class: "form-control",
+                data: { character_count_target: "input", action: "input->character-count#update" } %>
+          <small class="form-text text-muted" data-character-count-target="counter"></small>
+        </div>
+
+        <div class="mb-4"
+             data-controller="character-count"
+             data-character-count-max-value="300">
+          <%= f.label :integration_goal, class: "form-label" %>
+          <small class="text-muted ms-2">One sentence: what does success look like after 30 days?</small>
+          <%= f.text_area :integration_goal, rows: 2, class: "form-control",
+                data: { character_count_target: "input", action: "input->character-count#update" } %>
+          <small class="form-text text-muted" data-character-count-target="counter"></small>
+        </div>
+
+        <%= f.submit "Generate path",
+              class: "btn btn-lg",
+              style: "background-color: var(--accent); color: white;",
+              data: { form_submit_target: "button" } %>
+
+        <small class="text-muted ms-3">This will use 1 of your daily AI calls.</small>
+      <% end %>
+    </div>
+  </div>
+</div>

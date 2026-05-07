@@ -1,0 +1,35 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 text-center">
+      <h1 class="display-5 fw-bold mb-3"><%= ENV.fetch("APP_NAME", "WelcomePath Demo") %></h1>
+      <p class="lead mb-4"><%= ENV.fetch("APP_TAGLINE", "") %></p>
+
+      <div class="card mb-4">
+        <div class="card-body text-start">
+          <h5 class="card-title">The R.O.O.T.S. Framework</h5>
+          <p class="card-text">
+            Belonging does not come from completing a checklist. It comes from establishing roots.
+            The R.O.O.T.S. framework ensures five root systems are deliberately addressed in a new
+            member's first 30 days: <strong>Relationships</strong>, <strong>Orientation</strong>,
+            <strong>Opportunities</strong>, <strong>Training</strong>, and <strong>Stories</strong>.
+          </p>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <%= render "paths/root_map", activities_by_root: {} %>
+      </div>
+
+      <% if current_user %>
+        <%= link_to "Create your first path", new_path_path, class: "btn btn-lg", style: "background-color: var(--accent); color: white;" %>
+      <% else %>
+        <%= link_to "Get started — sign up free", sign_up_path, class: "btn btn-lg", style: "background-color: var(--accent); color: white;" %>
+        <%= link_to "Sign in", sign_in_path, class: "btn btn-lg btn-outline-secondary ms-2" %>
+      <% end %>
+
+      <p class="text-muted small mt-4">
+        MIT licensed · runs locally · no data leaves your machine except for the Gemini call
+      </p>
+    </div>
+  </div>
+</div>

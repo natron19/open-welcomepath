@@ -1,0 +1,77 @@
+<div class="container py-4">
+  <h1 class="mb-3"><%= @path.name %></h1>
+
+  <%# Input summary %>
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-2">
+        <div class="col-6">
+          <div class="text-muted small">Community type</div>
+          <div><%= @path.community_type %></div>
+        </div>
+        <div class="col-6">
+          <div class="text-muted small">Member type</div>
+          <div><%= @path.member_type %></div>
+        </div>
+        <div class="col-12 mt-2">
+          <div class="text-muted small">Integration goal</div>
+          <div><%= @path.integration_goal %></div>
+        </div>
+        <div class="col-12 mt-2">
+          <div class="text-muted small">Member background</div>
+          <div><%= @path.member_background %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# Root summary list %>
+  <div class="card mb-4">
+    <div class="card-header">R.O.O.T.S. Summary</div>
+    <ul class="list-group list-group-flush">
+      <% PathActivity::ROOT_SYSTEMS.each do |root| %>
+        <li class="list-group-item d-flex justify-content-between">
+          <span class="fw-semibold text-capitalize"><%= root %></span>
+          <span class="text-muted"><%= @activities_by_root[root]&.size || 0 %> activities</span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <%# AI disclaimer %>
+  <p class="text-muted small mb-4">
+    This path is a starting point, not a finished plan.
+    Review each activity for fit with your community before sharing it with a new member.
+  </p>
+
+  <%# Print button — hidden in actual print output %>
+  <button onclick="window.print()" class="btn btn-outline-secondary mb-4 d-print-none">
+    Print / Save PDF
+  </button>
+  <%# NOTE: onclick="window.print()" is a deliberate, narrow exception to the no-inline-JS rule.
+      This is a single browser-native call on a print-only layout that Turbo never re-renders. %>
+
+  <%# Weekly panels %>
+  <% (1..4).each do |week| %>
+    <div class="card mb-3 week-panel">
+      <div class="card-header fw-semibold">Week <%= week %></div>
+      <div class="card-body">
+        <% activities = @activities_by_week[week] || [] %>
+        <% if activities.empty? %>
+          <p class="text-muted mb-0">No activities for this week.</p>
+        <% else %>
+          <% activities.each do |activity| %>
+            <div class="mb-3 pb-3 border-bottom">
+              <div class="d-flex justify-content-between align-items-start">
+                <strong><%= activity.name %></strong>
+                <span class="badge ms-2 badge-root-<%= activity.root_system %>"><%= activity.root_system %></span>
+              </div>
+              <p class="mb-1 mt-1 small"><%= activity.description %></p>
+              <small class="text-muted">~<%= activity.estimated_minutes %> min</small>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
