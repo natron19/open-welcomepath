@@ -57,12 +57,22 @@
           <small class="form-text text-muted" data-character-count-target="counter"></small>
         </div>
 
-        <%= f.submit "Generate path",
-              class: "btn btn-lg",
-              style: "background-color: var(--accent); color: white;",
-              data: { form_submit_target: "button" } %>
+        <div data-form-submit-target="actions" class="d-flex align-items-center gap-3 flex-wrap">
+          <%= f.submit "Generate path",
+                class: "btn btn-lg",
+                style: "background-color: var(--accent); color: white;" %>
+          <%= link_to "Cancel", paths_path, class: "btn btn-lg btn-outline-secondary" %>
+          <small class="text-muted">This will use 1 of your daily AI calls.</small>
+        </div>
 
-        <small class="text-muted ms-3">This will use 1 of your daily AI calls.</small>
+        <div data-form-submit-target="loading" class="d-none d-flex align-items-center gap-3 py-2">
+          <div class="spinner-border" style="width: 2.5rem; height: 2.5rem; color: var(--accent);" role="status" aria-hidden="true"></div>
+          <div>
+            <div class="fw-semibold">Generating your path…</div>
+            <small class="text-muted">This usually takes 10–15 seconds.</small>
+          </div>
+          <%= link_to "Cancel", paths_path, class: "btn btn-outline-secondary btn-sm ms-2" %>
+        </div>
       <% end %>
     </div>
   </div>

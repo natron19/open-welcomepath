@@ -104,7 +104,8 @@ class PathsController < ApplicationController
   end
 
   def parse_and_save_activities!(raw, path)
-    data = JSON.parse(raw)
+    cleaned = raw.gsub(/\A```(?:json)?\s*/, "").gsub(/\s*```\z/, "").strip
+    data = JSON.parse(cleaned)
   rescue JSON::ParserError
     raise ParseError, "Gemini returned invalid JSON. Please try again."
   else

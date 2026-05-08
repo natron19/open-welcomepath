@@ -1,11 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["button"]
+  static targets = ["actions", "loading"]
 
   submit() {
-    const btn = this.buttonTarget
-    btn.disabled = true
-    btn.innerHTML = `Generating… <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
+    if (this.hasActionsTarget) this.actionsTarget.classList.add("d-none")
+    if (this.hasLoadingTarget) this.loadingTarget.classList.remove("d-none")
   }
 }
