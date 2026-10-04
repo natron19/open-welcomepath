@@ -1,0 +1,14 @@
+# Per-app guardrail configuration, read by AiGuardConfig.
+# See docs/ai-guardrails.md (Layer 1b: AiOutputGuard) and docs/ai-evals.md.
+
+# Onboarding inputs describe a community and a new member, not personal distress.
+crisis_terms: []
+
+# PathsController#parse_and_save_activities! JSON-parses the response and raises
+# ParseError when any of the five R.O.O.T.S. keys is missing, so all five are required.
+templates:
+  health_ping:
+    format: text
+  welcomepath_path_v1:
+    format: json
+    required_keys: [relationships, orientation, opportunities, training, stories]
