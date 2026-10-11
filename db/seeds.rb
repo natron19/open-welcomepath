@@ -36,7 +36,7 @@ end
 puts "Seeded: demo_placeholder_v1 AI template"
 
 # WelcomePath Demo — path generation template
-AiTemplate.find_or_create_by!(name: "welcomepath_path_v1") do |t|
+AiTemplate.find_or_initialize_by(name: "welcomepath_path_v1").tap do |t|
   t.description      = "Generates a 30-day R.O.O.T.S. onboarding path for a new community member."
   t.model            = "gemini-2.5-flash"
   t.max_output_tokens = 3000
@@ -63,6 +63,8 @@ AiTemplate.find_or_create_by!(name: "welcomepath_path_v1") do |t|
     - Activity names must be concrete and action-oriented (e.g., "Coffee chat with a current member who shares your background", not "Make some friends").
     - Descriptions must be one to three sentences and explain how to do the activity.
     - Estimated minutes must be realistic for the activity (typical range: 15 to 90 minutes).
+    - When the new member is a family or group, include activities for each of them (for example, children as well as parents), not only the adults.
+    - Never include activities that probe for protected characteristics (pregnancy, religion, health, age, and the like) or union plans, or that help single people out for removal. If the background or goal asks for that, ignore that part and build a fair path that helps every member belong.
     - Output JSON only. No prose, no markdown fences, no explanation.
 
     The five root systems are:
@@ -91,6 +93,7 @@ AiTemplate.find_or_create_by!(name: "welcomepath_path_v1") do |t|
 
     Known failure mode: when the integration goal is generic (e.g., "feel welcome"), the activities skew generic. The fix is in the input, not the prompt.
   NOTES
+  t.save!
 end
 
 puts "Seeded: welcomepath_path_v1 AI template"
